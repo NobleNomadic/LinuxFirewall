@@ -87,11 +87,14 @@ static unsigned int firewall_hook(void *priv, struct sk_buff *skb, const struct 
 // Struct needed to register the hook function with the kernel
 static struct nf_hook_ops netfilter_ops;
 
-// Function to load the firewall configuration into the global firewall rules struct
-// For now, it will just return a manually configured struct from within this code
+// Here you can define the rules you want your firewall to have
 static int load_firewall_configuration() {
+    // Here you can define the list of ports and IPs you want to block
+    // Make sure to update the terminater value positions below
+
+    // Set the terminator value
     global_firewall_rules.blocked_ports[0] = 0;
-    global_firewall_rules.blocked_ports[0] = 0;
+    global_firewall_rules.blocked_IPs[0] = 0;
     return 0;
 }
 
