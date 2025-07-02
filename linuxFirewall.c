@@ -13,7 +13,7 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("NobleNomadic");
 MODULE_DESCRIPTION("Firewall module to filter data that is sent into the kernel");
-MODULE_VERSION("0.2");
+MODULE_VERSION("1.0");
 
 #define MAX_BLOCKED_PORTS 512
 #define MAX_BLOCKED_IPS 512
@@ -43,7 +43,7 @@ static int inspect_packet(struct iphdr *iph) {
         }
     }
 
-    // Check port blocklist
+    // Check port blocklist if it came from a UDP or TCP port
     if (iph->protocol == IPPROTO_TCP || iph->protocol == IPPROTO_UDP) {
         unsigned short src_port = 0;
 
@@ -57,13 +57,15 @@ static int inspect_packet(struct iphdr *iph) {
             src_port = ntohs(udph->source);
         }
 
+        // Loop over the list of blocked ports
         for (i = 0; i < MAX_BLOCKED_PORTS && global_firewall_rules.blocked_ports[i]; i++) {
+            // If the current port matches the one where the packet came from, then return 1 to drop the packet
             if (src_port == global_firewall_rules.blocked_ports[i]) {
                 return 1;
             }
         }
     }
-
+    // Return 0 to allow packet to continue to kernel
     return 0;
 }
 
@@ -103,7 +105,7 @@ static int __init firewall_init(void) {
     // Load the configuration
     load_firewall_configuration();
 
-    // Register hook
+    // Register hook so that all information is checked with the hook before continuing
     netfilter_ops.hook = firewall_hook;
     netfilter_ops.hooknum = NF_INET_PRE_ROUTING;
     netfilter_ops.pf = PF_INET;
