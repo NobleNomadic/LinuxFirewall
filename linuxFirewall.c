@@ -1,3 +1,22 @@
+/*
+ * linuxFirewall.c - Example firewall Linux kernel module
+ *
+ * Copyright (C) 2025 NobleNomadic
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -13,7 +32,7 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("NobleNomadic");
 MODULE_DESCRIPTION("Firewall module to filter data that is sent into the kernel");
-MODULE_VERSION("1.0");
+MODULE_VERSION("1.1");
 
 #define MAX_BLOCKED_PORTS 512
 #define MAX_BLOCKED_IPS 512
@@ -90,7 +109,7 @@ static unsigned int firewall_hook(void *priv, struct sk_buff *skb, const struct 
 static struct nf_hook_ops netfilter_ops;
 
 // Here you can define the rules you want your firewall to have
-static int load_firewall_configuration() {
+static int load_firewall_configuration(void) {
     // Here you can define the list of ports and IPs you want to block
     // Make sure to update the terminater value positions below
 

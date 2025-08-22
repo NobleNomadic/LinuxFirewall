@@ -21,17 +21,17 @@ global_firewall_rules.blocked_IPs[1] = 0;
 ```
 Then compile it with `make`. You can then run
 ```bash
-sudo insmod firewall.ko
+sudo insmod linuxFirewall.ko
 ```
 You can load it with `insmod`
 ```bash
-sudo insmod LinuxFirewall.ko
+sudo insmod linuxFirewall.ko
 ```
-You can check logs with `tail`
+You can check logs with `dmesg`
 ```bash
-dmsg | tail
+sudo dmesg | tail
 ```
 It can be unloaded using `rmmod`
 ```bash
-sudo rmmod LinuxFirewall
+sudo rmmod linuxFirewall
 ```
